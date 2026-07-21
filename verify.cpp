@@ -22,3 +22,11 @@ int mobiusOK(long a,long b,long c,long d,int N){
     }
     return 1;
 }
+
+string classifyMobius(long a,long b,long c,long d){
+    auto ev=[&](double x){ return (a*x+b)/(c*x+d); };
+    double f2=ev(2), f3=ev(3);
+    if(fabs(f2-2)<1e-9 && fabs(f3-3)<1e-9) return "x";
+    if(fabs(f2-0.5)<1e-9 && fabs(f3-1.0/3)<1e-9) return "1/x";
+    char buf[64]; snprintf(buf,64,"(%ldx+%ld)/(%ldx+%ld)",a,b,c,d); return buf;
+}
