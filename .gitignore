@@ -1,0 +1,5 @@
+*.o
+overlap
+verify
+p3_brute
+p3_construct
