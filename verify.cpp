@@ -30,3 +30,13 @@ string classifyMobius(long a,long b,long c,long d){
     if(fabs(f2-0.5)<1e-9 && fabs(f3-1.0/3)<1e-9) return "1/x";
     char buf[64]; snprintf(buf,64,"(%ldx+%ld)/(%ldx+%ld)",a,b,c,d); return buf;
 }
+
+int monomialOK(int k,int N){
+    for(int n=1;n<=N;n++) for(int j=0;j<n;j++){
+        C xi = exp(C(0,1)*(2.0*PI*j/n));
+        if(k<0 && abs(xi)<1e-12) return 0;
+        C val = pow(xi, (double)k);
+        if(abs(pow(val,n)-C(1,0))>1e-6) return 0;
+    }
+    return 1;
+}
