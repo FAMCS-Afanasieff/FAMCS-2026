@@ -51,3 +51,5 @@ int ratOK(const vector<double>&P,const vector<double>&Q,int N){
     }
     return 1;
 }
+
+long ordOf(long g,long p){ long o=1,cur=g%p; while(cur!=1){cur=cur*g%p;o++;} return o; }
