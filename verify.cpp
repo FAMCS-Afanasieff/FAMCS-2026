@@ -53,3 +53,49 @@ int ratOK(const vector<double>&P,const vector<double>&Q,int N){
 }
 
 long ordOf(long g,long p){ long o=1,cur=g%p; while(cur!=1){cur=cur*g%p;o++;} return o; }
+
+int main(){
+    int N=15;
+    set<string> found;
+    for(long a=-4;a<=4;a++)for(long b=-4;b<=4;b++)for(long c=-4;c<=4;c++)for(long d=-4;d<=4;d++){
+        if(a*d-b*c==0) continue;
+        if(mobiusOK(a,b,c,d,N)) found.insert(classifyMobius(a,b,c,d));
+    }
+    printf("R(x) =");
+    for(auto&s:found) printf(" %s", s.c_str());
+    printf("\n");
+
+    printf("x^k:");
+    for(int k=-8;k<=8;k++) if(monomialOK(k,N)) printf(" %d",k);
+    printf("\n");
+
+    struct T{const char*name; vector<double>P,Q;};
+    vector<T> tests={
+        {"x^2+1",        {1,0,1},        {1}},
+        {"(x^2+x)/2",    {0,1,1},        {2}},
+        {"2x",           {0,2},          {1}},
+        {"-x",           {0,-1},         {1}},
+        {"(x-2)/(1-2x)", {-2,1},         {1,-2}},
+        {"(x+1)/2",      {1,1},          {2}},
+    };
+    for(auto&t:tests) printf("%s:%s\n", t.name, ratOK(t.P,t.Q,N)?"ok":"no");
+
+    for(int p : {3,5,7,11,13}){
+        unsigned long long prod=1; for(long g=1;g<p;g++) prod*= (unsigned long long)ordOf(g,p);
+        long long brute=-1;
+        if(p<=7){
+            int u=p-1; vector<long> el; for(long g=1;g<p;g++) el.push_back(g);
+            vector<long> ord(p); for(long g=1;g<p;g++) ord[g]=ordOf(g,p);
+            vector<int> idx(u,0); brute=0;
+            while(true){
+                bool ok=true;
+                for(int i=0;i<u&&ok;i++){ long xi=el[i], y=el[idx[i]];
+                    if(ord[y] % 1 !=0){} if( ord[xi] % ord[y] != 0 ) ok=false; }
+                if(ok) brute++;
+                int i=0; for(;i<u;i++){ if(++idx[i]<u) break; idx[i]=0; } if(i==u) break;
+            }
+        }
+        printf("%d|%llu|%lld|%d\n", p, prod, brute, p-1);
+    }
+    return 0;
+}
