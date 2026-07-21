@@ -40,3 +40,14 @@ int monomialOK(int k,int N){
     }
     return 1;
 }
+
+int ratOK(const vector<double>&P,const vector<double>&Q,int N){
+    auto evalp=[&](const vector<double>&A,C x){ C s=0,xp=1; for(double a:A){s+=a*xp; xp*=x;} return s; };
+    for(int n=1;n<=N;n++) for(int j=0;j<n;j++){
+        C xi=exp(C(0,1)*(2.0*PI*j/n));
+        C den=evalp(Q,xi); if(abs(den)<1e-9) return 0;
+        C val=evalp(P,xi)/den;
+        if(abs(pow(val,n)-C(1,0))>1e-6) return 0;
+    }
+    return 1;
+}
