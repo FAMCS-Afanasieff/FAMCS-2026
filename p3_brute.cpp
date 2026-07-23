@@ -11,7 +11,15 @@ int main(int argc, char** argv){
     for(int n=2;n<=NMAX;n++){
         vector<int> tail(n-1);
         for(int j=0;j<n-1;j++) tail[j]=j+2;
-        printf("%d\n", n);
+        long long Q1=LLONG_MIN, Q2=LLONG_MIN;
+        long long Q3=LLONG_MAX, Q4=LLONG_MAX, Q5=LLONG_MAX;
+        vector<int> sig(n+1), pw(n+1), id(n+1);
+        for(int i=1;i<=n;i++) id[i]=i;
+        do{
+            sig[1]=tail[0];
+            for(int j=0;j<n-2;j++) sig[tail[j]]=tail[j+1];
+            sig[tail[n-2]]=1;
+        }while(next_permutation(tail.begin(),tail.end()));
     }
     return 0;
 }
