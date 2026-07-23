@@ -19,6 +19,14 @@ int main(int argc, char** argv){
             sig[1]=tail[0];
             for(int j=0;j<n-2;j++) sig[tail[j]]=tail[j+1];
             sig[tail[n-2]]=1;
+            vector<int> fres(n,0);
+            for(int i=1;i<=n;i++) pw[i]=i;
+            fres[0]=0;
+            for(int r=1;r<n;r++){
+                for(int i=1;i<=n;i++) pw[i]=sig[pw[i]];
+                int c=0; for(int i=1;i<=n-1;i++) if(pw[i]==i+1) c++;
+                fres[r]=c;
+            }
         }while(next_permutation(tail.begin(),tail.end()));
     }
     return 0;
