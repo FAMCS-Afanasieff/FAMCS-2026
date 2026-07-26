@@ -120,3 +120,26 @@ bool reachablePattern(){
     for(int i=0;i<n*n;i++) if(s[i]>0) return false;
     return true;
 }
+
+vector<int> matchTo;
+bool tryKuhn(int u,const vector<int>&Sc,vector<char>&used){
+    for(int d=0;d<4;d++){int r=u/n+DR[d],c=u%n+DC[d]; if(!inb(r,c))continue;
+        int v=id(r,c); if(Sc[v]!=Sc[u]||Sc[v]==0) continue;
+        if(used[v]) continue; used[v]=1;
+        if(matchTo[v]==-1||tryKuhn(matchTo[v],Sc,used)){ matchTo[v]=u; return true; }
+    }
+    return false;
+}
+int minDominoesForColour(int col){
+    vector<int> Sc(n*n,0); int cnt=0;
+    for(int i=0;i<n*n;i++) if(!bg[i]&&target[i]==col){ Sc[i]=col; cnt++; }
+    if(cnt==0) return 0;
+    matchTo.assign(n*n,-1); int matching=0;
+    for(int i=0;i<n*n;i++){
+        int r=i/n,c=i%n; if(((r+c)&1)) continue;
+        if(Sc[i]!=col) continue;
+        vector<char> used(n*n,0);
+        if(tryKuhn(i,Sc,used)) matching++;
+    }
+    return cnt - matching;
+}
