@@ -44,3 +44,31 @@ vector<int> simulate(const vector<Move>& mv){
     return g;
 }
 bool verify(const vector<Move>& mv){ return simulate(mv)==target; }
+
+vector<int> st;
+vector<int> rem;
+vector<Pair> revCover;
+
+static const int DR[4]={0,0,1,-1}, DC[4]={1,-1,0,0};
+
+int optionCount(int u){
+    int r=u/n,c=u%n,cu=st[u],cnt=0;
+    for(int d=0;d<4;d++){int rr=r+DR[d],cc=c+DC[d]; if(!inb(rr,cc))continue;
+        int v=id(rr,cc); if(bg[v])continue;
+        if(st[v]==WILD||st[v]==cu) cnt++;
+    }
+    return cnt;
+}
+
+int pickMRV(){
+    int best=-2, bestCnt=1e9;
+    for(int i=0;i<n*n;i++){
+        if(bg[i]||st[i]==WILD) continue;
+        if(best==-2) best=-3;
+        int cnt=optionCount(i);
+        if(cnt>0 && cnt<bestCnt){bestCnt=cnt;best=i;}
+    }
+    if(best==-3) return -2;
+    if(best==-2) return -1;
+    return best;
+}
