@@ -101,3 +101,22 @@ bool dfs1(){
     }
     return false;
 }
+
+bool reachablePattern(){
+    vector<int> s(n*n);
+    for(int i=0;i<n*n;i++) s[i]= bg[i]? -1 : target[i];
+    bool changed=true;
+    while(changed){
+        changed=false;
+        for(const auto&p:pairs){
+            int a=p.a,b=p.b, sa=s[a], sb=s[b];
+            if(sa==0 && sb==0) continue;
+            int col = sa>0? sa : sb;
+            if((sa==0||sa==col) && (sb==0||sb==col)){
+                if(s[a]!=0||s[b]!=0){ s[a]=0; s[b]=0; changed=true; }
+            }
+        }
+    }
+    for(int i=0;i<n*n;i++) if(s[i]>0) return false;
+    return true;
+}
