@@ -72,3 +72,32 @@ int pickMRV(){
     if(best==-2) return -1;
     return best;
 }
+
+bool dfs1(){
+    if(++nodes>nodeCap){capHit=true;return false;}
+    int u=pickMRV();
+    if(u==-1) return true;
+    if(u==-2) return false;
+    int r=u/n,c=u%n,cu=st[u];
+    if(rem[cu]==0) return false;
+    int cand[4], nc=0;
+    for(int d=0;d<4;d++){int rr=r+DR[d],cc=c+DC[d]; if(!inb(rr,cc))continue;
+        int v=id(rr,cc); if(bg[v])continue;
+        if(st[v]==WILD||st[v]==cu) cand[nc++]=d;
+    }
+    stable_sort(cand,cand+nc,[&](int x,int y){
+        int vx=id(r+DR[x],c+DC[x]), vy=id(r+DR[y],c+DC[y]);
+        return (st[vx]==cu) && (st[vy]!=cu);
+    });
+    for(int t=0;t<nc;t++){
+        int d=cand[t], rr=r+DR[d],cc=c+DC[d], v=id(rr,cc), ov=st[v];
+        st[u]=WILD; st[v]=WILD; rem[cu]--;
+        Move mv = (d==0)?Move{r,c,true ,cu} : (d==1)?Move{r,c-1,true ,cu}
+                 :(d==2)?Move{r,c,false,cu} :        Move{r-1,c,false,cu};
+        revCover.push_back({u,v,mv});
+        if(dfs1()) return true;
+        revCover.pop_back();
+        st[u]=cu; st[v]=ov; rem[cu]++;
+    }
+    return false;
+}
