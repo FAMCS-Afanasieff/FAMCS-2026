@@ -192,3 +192,24 @@ bool dfs2(int j){
     if(failMemo.size()<4000000) failMemo.insert(key);
     return false;
 }
+
+bool readGrid(){
+    target.assign(n*n,0);
+    for(int i=0;i<n*n;i++){ if(!(cin>>target[i])) return false; if(target[i]<0||target[i]>k){return false;} }
+    bg.assign(n*n,0); for(int i=0;i<n*n;i++) bg[i]=(target[i]==0);
+    return true;
+}
+
+int countNonBgPairs(){ return (int)pairs.size(); }
+
+bool assembleMode1(vector<Move>& out){
+    out.clear();
+    long long surplus=0; for(int c=1;c<=k;c++) surplus+=rem[c];
+    if(surplus>0){
+        if(pairs.empty()) return false;
+        Move slot=pairs[0].mv;
+        for(int c=1;c<=k;c++) for(int t=0;t<rem[c];t++){ Move mm=slot; mm.color=c; out.push_back(mm);}
+    }
+    for(int i=(int)revCover.size()-1;i>=0;i--) out.push_back(revCover[i].mv);
+    return true;
+}
