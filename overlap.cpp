@@ -143,3 +143,28 @@ int minDominoesForColour(int col){
     }
     return cnt - matching;
 }
+
+vector<int> seq;
+vector<Move> pos;
+unordered_set<string> failMemo;
+string enc(int j){
+    string s(n*n+4,0);
+    for(int i=0;i<n*n;i++) s[i]=(char)(bg[i]?255:st[i]);
+    s[n*n]=(char)(j&255); s[n*n+1]=(char)((j>>8)&255);
+    return s;
+}
+
+bool prune2(int j){
+    vector<int> need(k+1,0);
+    for(int i=0;i<n*n;i++) if(!bg[i]&&st[i]!=WILD) need[st[i]]++;
+    vector<int> have(k+1,0);
+    for(int t=1;t<=j;t++) have[seq[t]]++;
+    for(int c=1;c<=k;c++) if(need[c] > 2*have[c]) return true;
+    static const int dr[4]={0,0,1,-1}, dc[4]={1,-1,0,0};
+    for(int r=0;r<n;r++)for(int c=0;c<n;c++){int u=id(r,c);
+        if(bg[u]||st[u]==WILD)continue; bool ok=false;
+        for(int d=0;d<4;d++){int rr=r+dr[d],cc=c+dc[d];if(inb(rr,cc)&&!bg[id(rr,cc)])ok=true;}
+        if(!ok)return true;
+    }
+    return false;
+}
