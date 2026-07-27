@@ -253,3 +253,53 @@ void countConfigs(bool ordered){
     }
     printf("%zu\n", finals.size());
 }
+
+int main(int argc,char**argv){
+    if(argc<2) return 1;
+    string mode=argv[1];
+    ios::sync_with_stdio(false);
+    if(mode=="mode1"||mode=="count1"){
+        if(argc<4) return 1;
+        n=atoi(argv[2]); k=atoi(argv[3]);
+        if(argc<4+k) return 1;
+        rem.assign(k+1,0); long long m=0;
+        for(int c=1;c<=k;c++){ rem[c]=atoi(argv[3+c]); m+=rem[c]; }
+        if(mode=="mode1"){
+            if(!readGrid()) return 1;
+            buildPairs();
+            bool anyFixed=false; for(int i=0;i<n*n;i++) if(!bg[i]) anyFixed=true;
+            if(!anyFixed) return !(m==0);
+            if(pairs.empty()) return 1;
+            if(!reachablePattern()) return 1;
+            for(int c=1;c<=k;c++){ int need=minDominoesForColour(c);
+                if(need>rem[c]) return 1; }
+            st.assign(n*n,WILD); for(int i=0;i<n*n;i++) if(!bg[i]) st[i]=target[i];
+            revCover.clear(); nodes=0; capHit=false;
+            bool ok=dfs1();
+            if(!ok) return 1;
+            vector<Move> out;
+            if(!assembleMode1(out)) return 1;
+            return !verify(out);
+        } else countConfigs(false);
+    }
+    else if(mode=="mode2"||mode=="count2"){
+        if(argc<4) return 1;
+        n=atoi(argv[2]); int m=atoi(argv[3]);
+        if(argc<4+m) return 1;
+        seq.assign(m+1,0); k=0; for(int t=1;t<=m;t++){ seq[t]=atoi(argv[3+t]); k=max(k,seq[t]); }
+        if(mode=="mode2"){
+            if(!readGrid()) return 1;
+            buildPairs();
+            bool anyFixed=false; for(int i=0;i<n*n;i++) if(!bg[i]) anyFixed=true;
+            if(!anyFixed) return !(m==0);
+            if(pairs.empty()) return 1;
+            st.assign(n*n,WILD); for(int i=0;i<n*n;i++) if(!bg[i]) st[i]=target[i];
+            pos.assign(m+1,{}); failMemo.clear(); nodes=0; capHit=false;
+            bool ok=dfs2(m);
+            if(!ok) return 1;
+            vector<Move> out; for(int t=1;t<=m;t++) out.push_back(pos[t]);
+            return !verify(out);
+        } else { rem.assign(k+1,0); countConfigs(true); }
+    }
+    return 1;
+}
