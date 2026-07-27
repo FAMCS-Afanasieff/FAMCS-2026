@@ -213,3 +213,43 @@ bool assembleMode1(vector<Move>& out){
     for(int i=(int)revCover.size()-1;i>=0;i--) out.push_back(revCover[i].mv);
     return true;
 }
+
+void countConfigs(bool ordered){
+    unordered_set<string> seen;
+    vector<Move> allPlace;
+    for(int r=0;r<n;r++)for(int c=0;c<n;c++){
+        if(c+1<n) allPlace.push_back({r,c,true ,0});
+        if(r+1<n) allPlace.push_back({r,c,false,0});
+    }
+    struct St{ vector<int> g; vector<int> rem; int idx; };
+    auto gridKey=[&](const vector<int>&g){ string s(n*n,0); for(int i=0;i<n*n;i++)s[i]=(char)g[i]; return s; };
+    unordered_set<string> finals;
+    vector<St> stk;
+    St s0; s0.g.assign(n*n,0);
+    if(ordered){ s0.idx=1; } else { s0.rem=rem; s0.idx=0; }
+    stk.push_back(s0);
+    unordered_set<string> vis;
+    long long guard=0;
+    while(!stk.empty()){
+        if(++guard>20000000LL){ printf("abort\n"); return; }
+        St s=stk.back(); stk.pop_back();
+        long long remaining = 0;
+        if(ordered) remaining = (int)seq.size()-1 - (s.idx-1);
+        else { for(int c=1;c<=k;c++) remaining+=s.rem[c]; }
+        if(remaining==0){ finals.insert(gridKey(s.g)); continue; }
+        string vk; { string g=gridKey(s.g); if(ordered){ vk=g+"#"+to_string(s.idx);} else { g.push_back('#'); for(int c=1;c<=k;c++){g+=to_string(s.rem[c]);g.push_back(',');} vk=g; } }
+        if(vis.count(vk)) continue; vis.insert(vk);
+        vector<int> colours;
+        if(ordered) colours.push_back(seq[s.idx]);
+        else for(int c=1;c<=k;c++) if(s.rem[c]>0) colours.push_back(c);
+        for(int col:colours){
+            for(auto mv:allPlace){
+                St t=s; int u=id(mv.r,mv.c),v=mv.horiz?id(mv.r,mv.c+1):id(mv.r+1,mv.c);
+                t.g[u]=col; t.g[v]=col;
+                if(ordered) t.idx=s.idx+1; else { t.rem[col]--; }
+                stk.push_back(t);
+            }
+        }
+    }
+    printf("%zu\n", finals.size());
+}
