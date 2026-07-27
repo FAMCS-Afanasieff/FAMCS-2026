@@ -168,3 +168,27 @@ bool prune2(int j){
     }
     return false;
 }
+
+bool dfs2(int j){
+    if(++nodes>nodeCap){capHit=true;return false;}
+    if(j==0){ for(int i=0;i<n*n;i++) if(!bg[i]&&st[i]!=WILD) return false; return true; }
+    if(prune2(j)) return false;
+    string key=enc(j);
+    if(failMemo.count(key)) return false;
+    int c=seq[j];
+    vector<const Pair*> order;
+    for(const auto&p:pairs){
+        int a=p.a,b=p.b;
+        if((st[a]==WILD||st[a]==c)&&(st[b]==WILD||st[b]==c)) order.push_back(&p);
+    }
+    auto progress=[&](const Pair*p){ return (st[p->a]!=WILD)||(st[p->b]!=WILD); };
+    stable_sort(order.begin(),order.end(),[&](const Pair*x,const Pair*y){return progress(x)&&!progress(y);});
+    for(const Pair* p:order){
+        int a=p->a,b=p->b,oa=st[a],ob=st[b];
+        st[a]=WILD;st[b]=WILD; pos[j]=p->mv; pos[j].color=c;
+        if(dfs2(j-1)) return true;
+        st[a]=oa;st[b]=ob;
+    }
+    if(failMemo.size()<4000000) failMemo.insert(key);
+    return false;
+}
