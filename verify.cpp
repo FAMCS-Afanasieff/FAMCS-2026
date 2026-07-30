@@ -17,7 +17,7 @@ int mobiusOK(long a,long b,long c,long d,int N){
             if(abs(den) < 1e-9) return 0;
             C val = (C(a,0)*xi + C(b,0)) / den;
             C p = pow(val, n);
-            if(abs(p - C(1,0)) > 1e-6) return 0;
+            if(abs(p - C(1,0)) > 1e-8) return 0;
         }
     }
     return 1;
@@ -36,7 +36,7 @@ int monomialOK(int k,int N){
         C xi = exp(C(0,1)*(2.0*PI*j/n));
         if(k<0 && abs(xi)<1e-12) return 0;
         C val = pow(xi, (double)k);
-        if(abs(pow(val,n)-C(1,0))>1e-6) return 0;
+        if(abs(pow(val,n)-C(1,0))>1e-8) return 0;
     }
     return 1;
 }
@@ -47,7 +47,7 @@ int ratOK(const vector<double>&P,const vector<double>&Q,int N){
         C xi=exp(C(0,1)*(2.0*PI*j/n));
         C den=evalp(Q,xi); if(abs(den)<1e-9) return 0;
         C val=evalp(P,xi)/den;
-        if(abs(pow(val,n)-C(1,0))>1e-6) return 0;
+        if(abs(pow(val,n)-C(1,0))>1e-8) return 0;
     }
     return 1;
 }
