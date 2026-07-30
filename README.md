@@ -1,6 +1,6 @@
 # FAMCS-2026
 
-Solutions to the three problems for the FAMCS (ФПМИ БГУ) 2026 entrance set "group2026famcs".
+Solutions to the three problems for the FAMCS 2026 entrance problem set.
 
 | Problem | Topic | Key Files |
 |---------|-------|-----------|
