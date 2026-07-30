@@ -35,7 +35,7 @@ int main(int argc, char** argv){
             if(c!=m[r]) fmatch=false;
         }
         int maxAll=0; for(int r=1;r<n;r++) maxAll=max(maxAll,m[r]);
-        int expected = (n%2==0)?2:2;
+        int expected = (n%2==0)?1:2;
         bool ok = dist && fmatch && (maxAll==expected);
         allok = allok && ok;
         printf("%d %d", n, maxAll);
