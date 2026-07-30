@@ -1,3 +1,4 @@
+#!/bin/bash
 set -e
 g++ -O2 -std=c++17 -o overlap overlap.cpp
 printf "1 1\n1 1\n" | ./overlap mode1 2 1 2
