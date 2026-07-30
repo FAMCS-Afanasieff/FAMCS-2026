@@ -26,4 +26,4 @@ g++ -O2 -std=c++17 -o p3_construct p3_construct.cpp && ./p3_construct 2 40
 
 ## AI Disclosure
 
-Solutions prepared with assistance from **GLM-5.2** (hypothesis verification) and **OpenCode-CI-Agent** (independent code review during Pull Requests).
+Solutions prepared with assistance from **GLM-5.2** and **OpenCode-CI-Agent**
