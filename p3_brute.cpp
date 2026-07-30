@@ -36,7 +36,7 @@ int main(int argc, char** argv){
                 if(k&1){ minOdd=min(minOdd,(long long)v); maxOdd=max(maxOdd,(long long)v);}
                 else   { minEven=min(minEven,(long long)v); maxEven=max(maxEven,(long long)v);}
             }
-            Q1=max(Q1,minAll);
+            Q1=max(Q1,maxAll);
             Q2=max(Q2,minOdd);
             Q3=min(Q3,maxEven);
             Q4=min(Q4,maxOdd);
