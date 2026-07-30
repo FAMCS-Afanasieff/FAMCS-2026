@@ -35,7 +35,7 @@ def main():
         seq = [random.randint(1,k) for _ in range(m)]
         g = play(n, seq)
         gs = grid_str(g)
-        kk = max(k, max((max(row) for row in g), default=0))
+        kk = max((max(row) for row in g), default=0)
         counts = [0]*(kk+1)
         for x in seq: counts[x]+=1
 
