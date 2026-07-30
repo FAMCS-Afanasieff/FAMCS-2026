@@ -234,7 +234,7 @@ void countConfigs(bool ordered){
         if(++guard>20000000LL){ printf("abort\n"); return; }
         St s=stk.back(); stk.pop_back();
         long long remaining = 0;
-        if(ordered) remaining = (int)seq.size()-1 - (s.idx-1);
+        if(ordered) remaining = (int)seq.size() - (s.idx-1);
         else { for(int c=1;c<=k;c++) remaining+=s.rem[c]; }
         if(remaining==0){ finals.insert(gridKey(s.g)); continue; }
         string vk; { string g=gridKey(s.g); if(ordered){ vk=g+"#"+to_string(s.idx);} else { g.push_back('#'); for(int c=1;c<=k;c++){g+=to_string(s.rem[c]);g.push_back(',');} vk=g; } }
