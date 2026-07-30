@@ -87,7 +87,7 @@ bool dfs1(){
     }
     stable_sort(cand,cand+nc,[&](int x,int y){
         int vx=id(r+DR[x],c+DC[x]), vy=id(r+DR[y],c+DC[y]);
-        return (st[vx]==cu) && (st[vy]!=cu);
+        return (st[vy]==cu) && (st[vx]!=cu);
     });
     for(int t=0;t<nc;t++){
         int d=cand[t], rr=r+DR[d],cc=c+DC[d], v=id(rr,cc), ov=st[v];
