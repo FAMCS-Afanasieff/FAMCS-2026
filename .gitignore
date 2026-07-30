@@ -1,5 +1,23 @@
-*.o
+# Compiled binaries
 overlap
 verify
 p3_brute
 p3_construct
+*.o
+
+# Python
+__pycache__/
+*.pyc
+
+# LaTeX aux
+*.aux
+*.log
+*.out
+*.pdf
+*.toc
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+
+# macOS
+.DS_Store
