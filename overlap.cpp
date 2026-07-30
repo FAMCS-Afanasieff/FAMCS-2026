@@ -125,7 +125,8 @@ vector<int> matchTo;
 bool tryKuhn(int u,const vector<int>&Sc,vector<char>&used){
     for(int d=0;d<4;d++){int r=u/n+DR[d],c=u%n+DC[d]; if(!inb(r,c))continue;
         int v=id(r,c); if(Sc[v]!=Sc[u]||Sc[v]==0) continue;
-        if(used[v]) continue; used[v]=1;
+        if(used[v]) continue;
+        used[v]=1;
         if(matchTo[v]==-1||tryKuhn(matchTo[v],Sc,used)){ matchTo[v]=u; return true; }
     }
     return false;
@@ -162,7 +163,8 @@ bool prune2(int j){
     for(int c=1;c<=k;c++) if(need[c] > 2*have[c]) return true;
     static const int dr[4]={0,0,1,-1}, dc[4]={1,-1,0,0};
     for(int r=0;r<n;r++)for(int c=0;c<n;c++){int u=id(r,c);
-        if(bg[u]||st[u]==WILD)continue; bool ok=false;
+        if(bg[u]||st[u]==WILD)continue;
+        bool ok=false;
         for(int d=0;d<4;d++){int rr=r+dr[d],cc=c+dc[d];if(inb(rr,cc)&&!bg[id(rr,cc)])ok=true;}
         if(!ok)return true;
     }
@@ -238,7 +240,8 @@ void countConfigs(bool ordered){
         else { for(int c=1;c<=k;c++) remaining+=s.rem[c]; }
         if(remaining==0){ finals.insert(gridKey(s.g)); continue; }
         string vk; { string g=gridKey(s.g); if(ordered){ vk=g+"#"+to_string(s.idx);} else { g.push_back('#'); for(int c=1;c<=k;c++){g+=to_string(s.rem[c]);g.push_back(',');} vk=g; } }
-        if(vis.count(vk)) continue; vis.insert(vk);
+        if(vis.count(vk)) continue;
+        vis.insert(vk);
         vector<int> colours;
         if(ordered) colours.push_back(seq[s.idx]);
         else for(int c=1;c<=k;c++) if(s.rem[c]>0) colours.push_back(c);

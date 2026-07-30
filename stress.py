@@ -1,4 +1,6 @@
-import random, subprocess, sys
+import random
+import subprocess
+import sys
 
 BIN = "./overlap"
 
@@ -21,7 +23,7 @@ def grid_str(g):
     return "\n".join(" ".join(map(str,row)) for row in g) + "\n"
 
 def run(args, grid):
-    p = subprocess.run([BIN]+args, input=grid, capture_output=True, text=True)
+    p = subprocess.run([BIN]+args, input=grid, capture_output=True, text=True, check=False)
     return p.returncode
 
 def main():
